@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Фотоальбом</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    .cover {
+      height: 100vh;
+      background: url('https://static.tildacdn.ink/tild3730-6566-4766-b165-306164333335/photo-1499002238440-.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+    .albums {
+      max-width: 1200px;
+      margin: 60px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .album {
+      cursor: pointer;
+    }
+
+    .album-cover {
+      width: 100%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+    }
+
+    .album-title {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cover">ФОТОАЛЬБОМ</div>
+
+<div class="albums" id="albums"></div>
+
+<script>
+fetch('albums.json')
+  .then(r => r.json())
+  .then(data => {
+    const container = document.getElementById('albums');
+
+    data.forEach(album => {
+      const div = document.createElement('div');
+      div.className = 'album';
+
+      div.innerHTML = `
+        <div class="album-cover" style="background-image:url('${album.photos[0]}')"></div>
+        <div class="album-title">${album.album}</div>
+      `;
+
+      div.onclick = () => {
+        location.href = 'album.html?album=' + encodeURIComponent(album.album);
+      };
+
+      container.appendChild(div);
+    });
+  });
+</script>
+
+</body>
+</html>
