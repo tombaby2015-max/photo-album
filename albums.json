@@ -1,0 +1,17 @@
+[
+  {
+    "album": "123",
+    "photos": [
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0517.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0518.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0521.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0522.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0524.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0527.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0528.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0529.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0531.JPG",
+      "https://cdn.jsdelivr.net/gh/tombaby2015-max/photos-test@main/123/IMG_0538.JPG"
+    ]
+  }
+]
