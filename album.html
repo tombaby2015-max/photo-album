@@ -32,6 +32,8 @@
       border-radius: 8px;
     }
 
+    /* ===== Viewer ===== */
+
     .viewer {
       position: fixed;
       inset: 0;
@@ -39,19 +41,52 @@
       display: none;
       align-items: center;
       justify-content: center;
+      z-index: 999;
     }
 
-    .viewer img {
+    .viewer-content {
+      position: relative;
       max-width: 90%;
       max-height: 90%;
     }
 
+    .viewer img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+    }
+
     .close {
       position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 30px;
+      top: -15px;
+      right: -15px;
+      background: #000;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
       cursor: pointer;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 50px;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px;
+    }
+
+    .arrow.left { left: -70px; }
+    .arrow.right { right: -70px; }
+
+    @media (max-width: 768px) {
+      .arrow.left { left: 10px; }
+      .arrow.right { right: 10px; }
     }
   </style>
 </head>
@@ -61,29 +96,39 @@
 <div class="grid" id="grid"></div>
 
 <div class="viewer" id="viewer">
-  <div class="close" onclick="closeViewer()">×</div>
-  <img id="viewer-img">
+  <div class="viewer-content">
+    <div class="close" onclick="closeViewer()">×</div>
+    <div class="arrow left" onclick="prev()">‹</div>
+    <img id="viewer-img">
+    <div class="arrow right" onclick="next()">›</div>
+  </div>
 </div>
 
 <script>
+let photos = [];
+let index = 0;
+
 const albumName = new URLSearchParams(location.search).get('album');
 
 fetch('albums.json')
   .then(r => r.json())
   .then(data => {
     const album = data.find(a => a.album === albumName);
+    photos = album.photos;
+
     const grid = document.getElementById('grid');
 
-    album.photos.forEach(src => {
+    photos.forEach((src, i) => {
       const img = document.createElement('img');
       img.src = src;
-      img.onclick = () => openViewer(src);
+      img.onclick = () => openViewer(i);
       grid.appendChild(img);
     });
   });
 
-function openViewer(src) {
-  document.getElementById('viewer-img').src = src;
+function openViewer(i) {
+  index = i;
+  document.getElementById('viewer-img').src = photos[index];
   document.getElementById('viewer').style.display = 'flex';
 }
 
@@ -91,8 +136,20 @@ function closeViewer() {
   document.getElementById('viewer').style.display = 'none';
 }
 
+function next() {
+  index = (index + 1) % photos.length;
+  document.getElementById('viewer-img').src = photos[index];
+}
+
+function prev() {
+  index = (index - 1 + photos.length) % photos.length;
+  document.getElementById('viewer-img').src = photos[index];
+}
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeViewer();
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft') prev();
 });
 </script>
 
