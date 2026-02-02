@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Альбом</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .back {
+      padding: 20px;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .grid img {
+      width: 100%;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .viewer img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="back" onclick="history.back()">← Назад</div>
+<div class="grid" id="grid"></div>
+
+<div class="viewer" id="viewer">
+  <div class="close" onclick="closeViewer()">×</div>
+  <img id="viewer-img">
+</div>
+
+<script>
+const albumName = new URLSearchParams(location.search).get('album');
+
+fetch('albums.json')
+  .then(r => r.json())
+  .then(data => {
+    const album = data.find(a => a.album === albumName);
+    const grid = document.getElementById('grid');
+
+    album.photos.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.onclick = () => openViewer(src);
+      grid.appendChild(img);
+    });
+  });
+
+function openViewer(src) {
+  document.getElementById('viewer-img').src = src;
+  document.getElementById('viewer').style.display = 'flex';
+}
+
+function closeViewer() {
+  document.getElementById('viewer').style.display = 'none';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeViewer();
+});
+</script>
+
+</body>
+</html>
